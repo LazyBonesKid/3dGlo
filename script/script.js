@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
         popupBtn.forEach(item => {
             item.addEventListener('click', () => {
                 popup.style.display = 'block';
-                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) || screen.width > 786) {
+                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
                     animationTogglePopUp();
                 }
             });
@@ -95,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         popUpClose.addEventListener('click', () => {
             popup.style.display = 'none';
-            if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) || screen.width > 786) {
+            if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
                 popupContent.style.left = '0%';
             }
         });
