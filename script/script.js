@@ -21,22 +21,26 @@ window.addEventListener('DOMContentLoaded', () => {
             seconds =  checkB(Math.floor(timeRemaining % 60)),
             minutes =   checkB(Math.floor((timeRemaining / 60) % 60)),
             hours =  checkB(Math.floor(timeRemaining / 60 / 60) % 24);
-            console.log('seconds: ', seconds);
-            console.log('minutes: ', minutes);
-            console.log('hours: ', hours);
-            //day = Math.floor(timeRemaining / 60 / 60 / 24);
             return { timeRemaining, hours, minutes, seconds };
         };
+        const idTime = setInterval(updateClock, 1000);
 
-        const updateClock = () => {
-            let timer = getTimeRemaining();
-            timerHours.textContent = +timer.hours > 0 ? timer.hours : '00';
-            timerMinutes.textContent = +timer.minutes > 0 ? timer.minutes : '00';
-            timerSeconds.textContent = +timer.seconds > 0 ? timer.seconds : '00';
-        };
+        function updateClock() {
+            const timer = getTimeRemaining();
+            if (isNaN(+timer.hours)) {
+                timerHours.textContent = '00';
+                timerMinutes.textContent = '00';
+                timerSeconds.textContent = '00';
+                clearInterval(idTime);
+            } else {
+                timerHours.textContent = timer.hours;
+                timerMinutes.textContent = timer.minutes;
+                timerSeconds.textContent = timer.seconds;
+            }
+        }
         updateClock();
-        setInterval(updateClock, 1000);
+        idTime;
     }
 
-    countTimer('1 july 2020');
+    countTimer('2 july 2020');
 });
