@@ -1,42 +1,38 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    function countTimer(deadline) {
-        const timerHours = document.querySelector('#timer-hours'),
-            timerMinutes = document.querySelector('#timer-minutes'),
-            timerSeconds = document.querySelector('#timer-seconds');
 
-        const checkB = number => {
-            if (number < 10) {
-                return '0' + number;
-            }
-            return number;
-        };
+    const dayArr = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
-        const getTimeRemaining = () => {
-            const
-            dateStop = new Date(deadline).getTime(),
-            dateNow = new Date().getTime(),
-            timeRemaining = (dateStop - dateNow) / 1000,
-            seconds =  checkB(Math.floor(timeRemaining % 60)),
-            minutes =   checkB(Math.floor((timeRemaining / 60) % 60)),
-            hours =  checkB(Math.floor(timeRemaining / 60 / 60) % 24);
-            console.log('seconds: ', seconds);
-            console.log('minutes: ', minutes);
-            console.log('hours: ', hours);
-            //day = Math.floor(timeRemaining / 60 / 60 / 24);
-            return { timeRemaining, hours, minutes, seconds };
-        };
+    const divOne = document.createElement('divOne');
+    document.body.append(divOne);
 
-        const updateClock = () => {
-            let timer = getTimeRemaining();
-            timerHours.textContent = +timer.hours > 0 ? timer.hours : '00';
-            timerMinutes.textContent = +timer.minutes > 0 ? timer.minutes : '00';
-            timerSeconds.textContent = +timer.seconds > 0 ? timer.seconds : '00';
-        };
-        updateClock();
-        setInterval(updateClock, 1000);
+    function checkB(number) {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
     }
 
-    countTimer('1 july 2020');
+    const asd = () => {
+        const date = new Date(),
+        TheNewYear = new Date('31 December 2020'),
+        UntilTheNewYear = Math.floor((TheNewYear.getTime() - date.getTime()) / 1000 / 60 / 60 / 24);
+        let timeOfDay;
+        if (date.getHours() >= 0 && date.getHours() < 6) {
+            timeOfDay = 'ночь';
+        } else if (date.getHours() >= 6 && date.getHours() < 12) {
+            timeOfDay = 'утро';
+        } else if (date.getHours() >= 12 && date.getHours() < 18) {
+            timeOfDay = 'день';
+        } else {
+            timeOfDay = 'вечер';
+        }
+        document.querySelector('divOne').innerHTML = `Добрый  ${timeOfDay} <br>
+        Сегодня: ${dayArr[date.getDay()]} <br>
+        Текущее время: ${checkB(date.getHours())}:${checkB(date.getMinutes())}:${checkB(date.getSeconds())} <br>
+        до нового года осталось ${UntilTheNewYear} дней`;
+    };
+
+    setInterval(asd, 1000);
 });
