@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }  else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu') {
                     menu.classList.toggle('active-menu');
                 }
-                //popup - закрытие
+                //popup
                 if (target.classList[0] === 'popup' || target.classList[0] === 'popup-close') {
                     popUp.style.display = 'none';
                     popupContent.style.left = '0%';
