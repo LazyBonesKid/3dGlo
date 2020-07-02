@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Меню
     const toggleMenu = () => {
         const  menu = document.querySelector('menu');
-        
+
             document.addEventListener('click', event => {
                 let target = event.target;
                 if (target.closest('.menu') || (target.closest('menu') && target.closest('a') !== null)) {
@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
         popupBtn.forEach(item => {
             item.addEventListener('click', () => {
                 popUp.style.display = 'block';
-                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) || screen.width > 786) {
+                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
                     animationTogglePopUp();
                 }
             });
@@ -91,7 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
             let target = event.target;
             if (target.classList.contains('popup-close')) {
                 popUp.style.display = 'none';
-                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) || screen.width > 786) {
+                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
                     popupContent.style.left = '0%';
                 }
             }  else {
