@@ -102,5 +102,22 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     togglePopUp();
+
+
+    const scrolling = () => {
+        const links = document.querySelectorAll('a[href*="#"]');
+
+        for (let i = 0; i < 7; i++) {
+            if (i !== 1) {
+                links[i].addEventListener('click', elem => {
+                    elem.preventDefault();
+                    const blockID = links[i].getAttribute('href').substr(1);
+                    document.getElementById(blockID).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+        }
+    };
+
+    scrolling();
 });
 
