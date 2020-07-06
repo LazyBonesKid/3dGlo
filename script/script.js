@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
         updateClock();
         idTime;
     }
-    countTimer('4 july 2020');
+    countTimer('8 july 2020');
 
     const popupContent = document.querySelector('.popup-content');
 
@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (target.classList[0] === 'popup' || target.classList[0] === 'popup-close') {
                     popUp.style.display = 'none';
                     popupContent.style.left = '0%';
-                } 
+                }
                 if (target.classList.value === 'btn form-btn popup-btn') {
                     popUp.style.display = 'block';
                     if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
         slider.addEventListener('click', event => {
             event.preventDefault();
 
-            let target = event.target;
+            const target = event.target;
 
             if (!target.matches('.portfolio-btn, .dot'))  {
                 return;
@@ -217,5 +217,39 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     slider();
+
+    //смена картинки
+    const imageSwap = () => {
+        const image = document.querySelectorAll('.command__photo');
+        let copy;
+        image.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                copy = event.target.src;
+                event.target.src = event.target.dataset.img;
+                event.target.dataset.img = copy;
+            });
+            item.addEventListener('mouseleave', () => {
+                copy = event.target.src;
+                event.target.src = event.target.dataset.img;
+                event.target.dataset.img = copy;
+            });
+        });
+    };
+
+    imageSwap();
+
+    const inputNumber = () => {
+        const calcBlock = document.querySelector('.calc-block'),
+        inputs = calcBlock.querySelectorAll('input');
+        inputs.forEach(item => {
+            item.addEventListener('input', () => {
+                if (item.value.match(/[^0-9]/g) !== null) {
+                    item.value = item.value.slice(0, -1);
+                }
+            });
+        });
+    };
+
+    inputNumber();
 });
 
