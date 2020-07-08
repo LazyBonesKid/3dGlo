@@ -398,15 +398,15 @@
 			<form id="form3" name="user_form">
 				<div>
 					<input type="text" class="form-name" id="form3-name" name="user_name" placeholder="Ваше имя"
-								 required>
+								required>
 				</div>
 				<div>
 					<input type="tel" class="form-phone" id="form3-phone" name="user_phone"
-								 placeholder="Ваш номер телефона" required>
+								placeholder="Ваш номер телефона" required>
 				</div>
 				<div>
 					<input type="email" class="form-email" id="form3-email" name="user_email"
-								 placeholder="Ваш E-mail">
+								placeholder="Ваш E-mail">
 				</div>
 				<button class="btn form-btn" type="submit">Оставить заявку!</button>
 			</form>
@@ -415,5 +415,64 @@
 </div>
 
 <script src="script\script.js"></script>
+<script src='Plugins\validator.js'></script>
+
+<script>
+	const validOne = new Validator({
+		selector: '#form1',
+		pattern: {
+			'form1-email' : /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
+			'form1-phone' : /^\+?[78]([-()]*\d){10}$/,
+			'form1-name' : /^[а-яёА-ЯЁ]'?[- а-яёА-ЯЁ]+$/
+		},
+		method: {
+			'form1-name': [
+				['notEmpty'],
+				['pattern', 'form1-name']
+			],
+			'form1-email': [
+				['notEmpty'],
+				['pattern', 'form1-email']
+			],
+			'form1-phone': [
+				['notEmpty'],
+				['pattern', 'form1-phone']
+			],
+		}
+	});
+
+	validOne.init();
+
+	const validTwo = new Validator({
+		selector: '#form2',
+		pattern: {
+			'form2-email' : /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/,
+			'form2-phone' : /^\+?[78]([-()]*\d){10}$/,
+			'form2-name' : /^[а-яёА-ЯЁ]'?[- а-яёА-ЯЁ]+$/,
+			'form2-message' : /[- а-яёА-ЯЁ0-9%().!*?/,+]+$/
+		},
+		method: {
+			'form2-name': [
+				['notEmpty'],
+				['pattern', 'form2-name']
+			],
+			'form2-email': [
+				['notEmpty'],
+				['pattern', 'form2-email']
+			],
+			'form2-phone': [
+				['notEmpty'],
+				['pattern', 'form2-phone']
+			],
+			'form2-message': [
+				['notEmpty'],
+				['pattern', 'form2-message']
+			]
+		}
+	});
+
+	validTwo.init();
+</script>
+
 </body>
 </html>
