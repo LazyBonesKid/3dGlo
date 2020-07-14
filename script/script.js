@@ -1,37 +1,45 @@
 window.addEventListener('DOMContentLoaded', () => {
-    // Таймер
-    function countTimer(deadline) {
+
+    // Таймер \/
+    const countTimer = deadline => {
+
         const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
         const checkB = number => {
+
             if (number < 10) {
                 return '0' + number;
             }
             return number;
+
         };
 
         const getTimeRemaining = () => {
-            const
-                dateStop = new Date(deadline).getTime(),
+
+            const dateStop = new Date(deadline).getTime(),
                 dateNow = new Date().getTime(),
                 timeRemaining = (dateStop - dateNow) / 1000,
                 seconds = checkB(Math.floor(timeRemaining % 60)),
                 minutes = checkB(Math.floor((timeRemaining / 60) % 60)),
                 hours = checkB(Math.floor(timeRemaining / 60 / 60) % 24);
-            //day = Math.floor(timeRemaining / 60 / 60 / 24);
+                //day = Math.floor(timeRemaining / 60 / 60 / 24);
             return {
                 timeRemaining,
                 hours,
                 minutes,
                 seconds
             };
+
         };
+
         const idTime = setInterval(updateClock, 1000);
 
         function updateClock() {
+
             const timer = getTimeRemaining();
+
             if (isNaN(+timer.hours)) {
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
@@ -42,86 +50,244 @@ window.addEventListener('DOMContentLoaded', () => {
                 timerMinutes.textContent = timer.minutes;
                 timerSeconds.textContent = timer.seconds;
             }
+
         }
+
         updateClock();
+
         idTime;
-    }
+
+    };
+
     countTimer('30 july 2020');
 
-    const popupContent = document.querySelector('.popup-content');
+// Анимации \/
+
+    const animate = ({ timing, draw, duration, elseFunc }) => {
+
+        const start = performance.now();
+        requestAnimationFrame(function animate(time) {
+
+            let timeFraction = (time - start) / duration;
+            if (timeFraction > 1) timeFraction = 1;
+
+            const progress = timing(timeFraction);
+
+            draw(progress);
+
+            if (timeFraction < 1) {
+                requestAnimationFrame(animate);
+            }  else {
+                elseFunc();
+            }
+
+        });
+
+    };
 
     const animationTogglePopUp = () => {
-        let left = 0;
-        const timer = setInterval(() => {
-            if (popupContent.style.left !== '38%') {
-                popupContent.style.left = left + '%';
-                left++;
-            } else {
-                clearInterval(timer);
-                return;
-            }
-        }, 5);
-    };
-    // Все меню
-    const toggleMenu = () => {
-        const menu = document.querySelector('menu'),
-            popUp = document.querySelector('.popup'),
-            tabHeader = document.querySelector('.service-header'),
-            tab = tabHeader.querySelectorAll('.service-header-tab'),
-            tabContent = document.querySelectorAll('.service-tab');
 
-        document.addEventListener('click', event => {
-            const target = event.target;
-            //меню
-            if (target.closest('.menu') || (target.closest('menu') && target.closest('a') !== null)) {
-                menu.classList.toggle('active-menu');
-            } else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu') {
-                menu.classList.toggle('active-menu');
-            }
-            //popup - закрытие
-            if (target.classList[0] === 'popup' || target.classList[0] === 'popup-close') {
-                popUp.style.display = 'none';
-                popupContent.style.left = '0%';
-            }
-            if (target.classList.value === 'btn form-btn popup-btn') {
-                popUp.style.display = 'block';
-                if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
-                    animationTogglePopUp();
-                }
-            }
-            // табы
-            if (target.closest('.service-header-tab')) {
-                for (let i = 0; i < tabContent.length; i++) {
-                    if (target.closest('.service-header-tab') === tab[i]) {
-                        tab[i].classList.add('active');
-                        tabContent[i].classList.remove('d-none');
-                    } else {
-                        tab[i].classList.remove('active');
-                        tabContent[i].classList.add('d-none');
-                    }
-                }
-            }
-            // scrolling
-            if (target.getAttribute('href') === '#service-block' || target.getAttribute('href') === '#portfolio' || target.getAttribute('href') === '#calc' || target.getAttribute('href') === '#command' || target.getAttribute('href') === '#connect' || target.getAttribute('src') === 'images/scroll.svg') {
-                event.preventDefault();
-                let blockID;
-                if (target.getAttribute('src') === 'images/scroll.svg') {
-                    blockID = target.closest('a').getAttribute('href').substr(1);
-                } else {
-                    blockID = target.getAttribute('href').substr(1);
-                }
-                document.getElementById(blockID).scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+        const popupContent = document.querySelector('.popup-content');
+
+        const drawPopup = progress => {
+            popupContent.style.left = 42 * progress + '%';
+        };
+
+        animate({
+            duration: 500,
+            timing: timeFraction => timeFraction,
+            draw: progress => {
+                drawPopup(progress);
+            },
+            elseFunc: () => cancelAnimationFrame(animate)
         });
     };
 
-    toggleMenu();
+    const animationLoading = item => {
+
+        const createWave = () => {
+
+            const skWave = document.createElement('div');
+
+            skWave.style = `
+            height: 100px;
+            width: 100px;
+            margin-top: 30px;
+            border-radius: 50%;
+            margin-left: 49%;
+            position: relative;`;
+
+            skWave.className = 'skWave';
+            item.append(skWave);
+
+            for (let i = 0; i < 12; i++) {
+
+                const div = document.createElement('div');
+
+                div.className = `skDiv ${i + 1}`;
+                div.style = `
+                margin: 10px;
+                background-color: #19B5FE;
+                height: 8px;
+                width: 8px;
+                border-radius: 50%;
+                display: inline-block;
+                position: absolute;
+                `;
+
+                skWave.appendChild(div);
+
+            }
+
+        };
+
+        const waveAnim = () => {
+
+            const skWaves = document.querySelectorAll('.skDiv'),
+            r = 30,
+            alpha = 2 * 3.14;
+
+            const completeDraw = progress => {
+                if (skWaves.length === 0) {
+                    cancelAnimationFrame(animate);
+                    return;
+                }
+
+                for (let i = 0, g = 0, op = 1; i < 12; i++, g += 0.4, op -= 0.1) {
+                    skWaves[i].style.left = r * Math.cos(alpha * progress - g) + 'px';
+                    skWaves[i].style.top  = r * Math.sin(alpha * progress - g) + 'px';
+                    skWaves[i].style.opacity = op;
+                }
+            };
+
+            animate({
+                duration: 2300,
+                timing: timeFraction => timeFraction,
+                draw: progress => {
+                completeDraw(progress);
+                },
+                elseFunc: () => {
+                    cancelAnimationFrame(animate);
+                    waveAnim();
+                }
+            });
+        };
+            createWave();
+            waveAnim();
+    };
+
+    const animationCalc = copyTotalValue => {
+
+        const totalValue = document.getElementById('total');
+
+        animate({
+            duration: 1000,
+            timing: timeFraction => timeFraction,
+            draw: progress => {
+                totalValue.textContent = Math.trunc(copyTotalValue * progress);
+            },
+            elseFunc: () => { return; }
+        });
+
+    };
+
+    // Все меню \/
+
+    const eventListener = () => {
+
+            const popupEventListener = target => {
+
+                const popupContent = document.querySelector('.popup-content'),
+                popUp = document.querySelector('.popup');
+
+                if (target.classList[0] === 'popup' || target.classList[0] === 'popup-close') {
+                    popUp.style.display = 'none';
+                    popupContent.style.left = '0%';
+                }
+
+                if (target.classList.value === 'btn form-btn popup-btn') {
+                    popUp.style.display = 'block';
+                    if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
+                        animationTogglePopUp();
+                    }
+                }
+
+            };
+
+            const menuEventListener = target => {
+
+                const menu = document.querySelector('menu');
+
+                if (target.closest('.menu') || (target.closest('menu') && target.closest('a') !== null)) {
+                    menu.classList.toggle('active-menu');
+                } else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu') {
+                    menu.classList.toggle('active-menu');
+                }
+
+            };
+
+            const tabsEventListener = target => {
+
+                const tabContent = document.querySelectorAll('.service-tab'),
+                    tabHeader = document.querySelector('.service-header'),
+                    tab = tabHeader.querySelectorAll('.service-header-tab');
+
+                if (target.closest('.service-header-tab')) {
+
+                    for (let i = 0; i < tabContent.length; i++) {
+                        if (target.closest('.service-header-tab') === tab[i]) {
+                            tab[i].classList.add('active');
+                            tabContent[i].classList.remove('d-none');
+                        } else {
+                            tab[i].classList.remove('active');
+                            tabContent[i].classList.add('d-none');
+                        }
+                    }
+
+                }
+
+            };
+
+            const scrollsEventListener = target => {
+
+                if (target.getAttribute('href') === '#service-block' || target.getAttribute('href') === '#portfolio' || target.getAttribute('href') === '#calc' || target.getAttribute('href') === '#command' || target.getAttribute('href') === '#connect' || target.getAttribute('src') === 'images/scroll.svg') {
+
+                    event.preventDefault();
+                    let blockID;
+
+                    if (target.getAttribute('src') === 'images/scroll.svg') {
+                        blockID = target.closest('a').getAttribute('href').substr(1);
+                    } else {
+                        blockID = target.getAttribute('href').substr(1);
+                    }
+
+                    document.getElementById(blockID).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                }
+            };
+
+        document.addEventListener('click', event => {
+
+            const target = event.target;
+            popupEventListener(target);
+            menuEventListener(target);
+            tabsEventListener(target);
+            scrollsEventListener(target);
+
+        });
+
+        // const buttonsSubmit = document.querySelectorAll('[type="submit"]');
+        // buttonsSubmit.addEventListener()
+    };
+
+    eventListener();
 
 
-    //слайдер
+
+    //слайдер \/
     const slider = () => {
         const slide = document.querySelectorAll('.portfolio-item'),
             slider = document.querySelector('.portfolio-content'),
@@ -225,43 +391,60 @@ window.addEventListener('DOMContentLoaded', () => {
 
     slider();
 
-    //смена картинки
     const imageSwap = () => {
+
         const image = document.querySelectorAll('.command__photo');
+
         let copy;
+
         image.forEach(item => {
             item.addEventListener('mouseenter', () => {
+
                 copy = event.target.src;
                 event.target.src = event.target.dataset.img;
                 event.target.dataset.img = copy;
+
             });
+
             item.addEventListener('mouseleave', () => {
+
                 copy = event.target.src;
                 event.target.src = event.target.dataset.img;
                 event.target.dataset.img = copy;
+
             });
+
         });
+
     };
 
     imageSwap();
 
-    const inputNumber = () => {
+    //калькулятор \/
+
+    const inputNumberVal = () => {
+
         const calcBlock = document.querySelector('.calc-block'),
             inputs = calcBlock.querySelectorAll('input');
+
         inputs.forEach(item => {
+
             item.addEventListener('input', () => {
+
                 if (item.value.match(/[^0-9]/g) !== null) {
                     item.value = item.value.slice(0, -1);
                 }
+
             });
+
         });
+
     };
 
-    inputNumber();
-
-    //калькулятор
+    inputNumberVal();
 
     const calc = (price = 100) => {
+
         const calcBlock = document.querySelector('.calc-block'),
             calcType = document.querySelector('.calc-type'),
             calcSquare = document.querySelector('.calc-square'),
@@ -269,34 +452,12 @@ window.addEventListener('DOMContentLoaded', () => {
             calcDay = document.querySelector('.calc-day'),
             totalValue = document.getElementById('total');
 
-
-        function animate({
-            timing,
-            draw,
-            duration
-        }) {
-
-            const start = performance.now();
-
-            requestAnimationFrame(function animate(time) {
-
-                let timeFraction = (time - start) / duration;
-                if (timeFraction > 1) timeFraction = 1;
-
-                const progress = timing(timeFraction);
-
-                draw(progress);
-
-                if (timeFraction < 1) {
-                    requestAnimationFrame(animate);
-                }
-            });
-        }
-
         const countSum = () => {
+
             let total = 0,
                 countValue = 1,
                 dayValue = 1;
+
             const squareValue = +calcSquare.value,
                 typeValue = calcType.options[calcType.selectedIndex].value;
 
@@ -318,13 +479,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const copyTotalValue = total;
 
-            animate({
-                duration: 1000,
-                timing: timeFraction => timeFraction,
-                draw: progress => {
-                    totalValue.textContent = Math.trunc(copyTotalValue * progress);
-                }
-            });
+            animationCalc(copyTotalValue);
 
             totalValue.textContent = total;
         };
@@ -342,166 +497,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     calc(100);
 
-    // анимация отправки
 
-    const animationTo = item => {
-        const createWave = () => {
-            const skWave = document.createElement('div');
-            skWave.style = `
-            height: 100px;
-            width: 100px;
-            margin-top: 30px;
-            border-radius: 50%;
-            margin-left: 49%;
-            position: relative;`;
-            skWave.className = 'skWave';
-            item.append(skWave);
-            for (let i = 0; i < 12; i++) {
-                const div = document.createElement('div');
-                div.className = `skDiv ${i + 1}`;
-                div.style = `
-                margin: 10px;
-                background-color: #19B5FE;
-                height: 8px;
-                width: 8px;
-                border-radius: 50%;
-                display: inline-block;
-                position: absolute;
-                `;
-                skWave.appendChild(div);
-            }
-        };
 
-        const waveAnim = () => {
-
-            const animate = ({ timing, draw, duration }) => {
-                const start = performance.now();
-                requestAnimationFrame(function animate(time) {
-
-                    let timeFraction = (time - start) / duration;
-                    if (timeFraction > 1) timeFraction = 1;
-
-                    const progress = timing(timeFraction);
-
-                    draw(progress);
-
-                    if (timeFraction < 1) {
-                        requestAnimationFrame(animate);
-                    }  else {
-                        cancelAnimationFrame(animate);
-                        waveAnim();
-                    }
-                });
-            };
-
-            const skWaves = document.querySelectorAll('.skDiv'),
-            r = 30,
-            alpha = 2 * 3.14;
-
-            const completeDraw = progress => {
-                if (skWaves.length === 0) {
-                    cancelAnimationFrame(animate);
-                    return;
-                }
-
-                for (let i = 0, g = 0, op = 1; i < 12; i++, g += 0.4, op -= 0.1) {
-                    skWaves[i].style.left = r * Math.cos(alpha * progress - g) + 'px';
-                    skWaves[i].style.top  = r * Math.sin(alpha * progress - g) + 'px';
-                    skWaves[i].style.opacity = op;
-                }
-            };
-
-            animate({
-                duration: 2300,
-                timing: timeFraction => timeFraction,
-                draw: progress => {
-                completeDraw(progress);
-                },
-            });
-        };
-            createWave();
-            waveAnim();
-    };
-
-    //send-ajax-form
-
-    const sendForm = () => {
-        const errorMessage = 'Что то пошло не так',
-            successMessage = 'Спасибо, мы скоро с вами свяжемся';
-
-        const form1 = document.getElementById('form1');
-        const form2 = document.getElementById('form2');
-        const formArr = [form1, form2];
-
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = `font-size: 2rem`;
-        statusMessage.className = 'statusMessage';
-
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application');
-            request.send(JSON.stringify(body));
-        };
-
-        formArr.forEach(item => {
-            item.addEventListener('submit', event => {
-                const inputs = item.querySelectorAll('input');
-
-                if (document.querySelector('.statusMessage')) {
-                    document.querySelector('.statusMessage').remove();
-                }
-                event.preventDefault();
-                animationTo(item);
-                const formData = new FormData(item);
-                const body = {};
-                formData.forEach((val, key) => {
-                    body[key] = val;
-                });
-
-                inputs.forEach(item => {
-                    item.value = '';
-                });
-
-                const skWaveDelet = () => {
-                    const skWave = document.querySelector('.skWave');
-                        skWave.remove();
-                };
-
-                const addStatusMessage = (item, message) => {
-                    console.log(item);
-                    statusMessage.textContent = message;
-                    item.appendChild(statusMessage);
-                };
-                postData(
-                    body,
-                    () => {
-                        skWaveDelet();
-                        addStatusMessage(item, successMessage);
-                },
-                    () => {
-                        skWaveDelet();
-                        addStatusMessage(item, errorMessage);
-                });
-            });
-        });
-
-    };
-
-    sendForm();
+    // validatorButtons
 
 
     const validator = () => {
+
         const name = document.querySelectorAll('[name="user_name"]'),
         regName = /[^а-яё ]/i,
         message = document.querySelector('[name="user_message"]'),
@@ -509,19 +511,27 @@ window.addEventListener('DOMContentLoaded', () => {
         regPhone = /[^0-9+]/;
 
         const change = (item, regExp) => {
+
             if (regExp.test(item.value)) {
                 item.style.color = 'red';
+                item.classList.add('ValError');
             }  else {
                 item.style.color = 'black';
+                item.classList.remove('ValError');
             }
+
+
         };
 
-        const addEventListenerForStr = (str, regExp) => {
+        const addEventListenerForStr = (str, regExp ) => {
+
             str.forEach(item => {
                 item.addEventListener('input', () => {
                     change(item, regExp);
+
                 });
             });
+
         };
 
         message.addEventListener('input', () => {
@@ -533,4 +543,120 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     validator();
+
+    const checkVal = item => {
+
+        const inputs = item.querySelectorAll('input');
+        console.log(inputs);
+        for (let i = 0; i < inputs.length; i++) {
+
+            if (inputs[i].classList.contains('ValError')) {
+                return true;
+            }
+
+        }
+
+    };
+
+
+    //send-ajax-form \/
+
+    const sendForm = () => {
+
+        const errorMessage = 'Что то пошло не так',
+            successMessage = 'Спасибо, мы скоро с вами свяжемся',
+            form1 = document.getElementById('form1'),
+            form2 = document.getElementById('form2'),
+            form3 = document.getElementById('form3'),
+            formArr = [form1, form2, form3],
+            statusMessage = document.createElement('div');
+
+        statusMessage.style.cssText = `font-size: 2rem`;
+        statusMessage.className = 'statusMessage';
+
+        const postData = (body, outputData, errorData) => {
+
+            const request = new XMLHttpRequest();
+
+            request.addEventListener('readystatechange', () => {
+
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application');
+            request.send(JSON.stringify(body));
+
+        };
+
+        formArr.forEach(item => {
+            item.addEventListener('submit', event => {
+
+                event.preventDefault();
+
+                if (checkVal(item)) {
+                    return;
+                }
+
+                const inputs = item.querySelectorAll('input');
+
+                if (document.querySelector('.statusMessage')) {
+                    document.querySelector('.statusMessage').remove();
+                }
+
+                animationLoading(item);
+
+                const formData = new FormData(item),
+                    body = {};
+
+                formData.forEach((val, key) => {
+                    body[key] = val;
+                });
+
+                inputs.forEach(item => {
+                    item.value = '';
+                });
+
+                const skWaveDelet = () => {
+
+                    const skWave = document.querySelector('.skWave');
+                        skWave.remove();
+
+                };
+
+                const addStatusMessage = (item, message) => {
+
+                    statusMessage.textContent = message;
+                    item.appendChild(statusMessage);
+
+                };
+
+                postData(
+
+                    body,
+                    () => {
+                        skWaveDelet();
+                        addStatusMessage(item, successMessage);
+                },
+                    () => {
+                        skWaveDelet();
+                        addStatusMessage(item, errorMessage);
+
+                });
+
+            });
+
+        });
+
+    };
+
+    sendForm();
 });
