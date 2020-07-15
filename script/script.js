@@ -547,7 +547,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const checkVal = item => {
 
         const inputs = item.querySelectorAll('input');
-        console.log(inputs);
         for (let i = 0; i < inputs.length; i++) {
 
             if (inputs[i].classList.contains('ValError')) {
@@ -574,26 +573,35 @@ window.addEventListener('DOMContentLoaded', () => {
         statusMessage.style.cssText = `font-size: 2rem`;
         statusMessage.className = 'statusMessage';
 
-        const postData = (body, outputData, errorData) => {
+
+
+        const postData = body => {
 
             const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
+            const abs = new Promise((resolve, reject) => {
 
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+
+                request.addEventListener('readystatechange', () => {
+
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                });
+
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application');
+                request.send(JSON.stringify(body));
 
             });
 
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application');
-            request.send(JSON.stringify(body));
+            return abs;
 
         };
 
@@ -639,18 +647,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 };
 
-                postData(
+                const outputData = () => {
+                    skWaveDelet();
+                    addStatusMessage(item, successMessage);
+                };
 
-                    body,
-                    () => {
-                        skWaveDelet();
-                        addStatusMessage(item, successMessage);
-                },
-                    () => {
-                        skWaveDelet();
-                        addStatusMessage(item, errorMessage);
+                const errorData = () => {
+                    skWaveDelet();
+                    addStatusMessage(item, errorMessage);
+                };
 
-                });
+                postData(body)
+                    .then(outputData)
+                    .catch(errorData);
 
             });
 
