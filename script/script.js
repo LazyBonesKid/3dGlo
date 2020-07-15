@@ -579,7 +579,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const request = new XMLHttpRequest();
 
-            const abs = new Promise((resolve, reject) => {
+            const answer = new Promise((resolve, reject) => {
 
 
                 request.addEventListener('readystatechange', () => {
@@ -601,7 +601,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
             });
 
-            return abs;
+            return answer;
 
         };
 
