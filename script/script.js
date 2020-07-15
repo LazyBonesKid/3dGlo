@@ -575,33 +575,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-        const postData = body => {
+        const postData = item => {
 
-            const request = new XMLHttpRequest();
-
-            const abs = new Promise((resolve, reject) => {
-
-
-                request.addEventListener('readystatechange', () => {
-
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        reject();
-                    }
-
-                });
-
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application');
-                request.send(JSON.stringify(body));
-
+            return fetch('./server.php', {
+                method: 'POST',
+                body: item
             });
-
-            return abs;
 
         };
 
@@ -622,42 +601,37 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 animationLoading(item);
 
-                const formData = new FormData(item),
-                    body = {};
-
-                formData.forEach((val, key) => {
-                    body[key] = val;
-                });
+                const formData = new FormData(item);
 
                 inputs.forEach(item => {
                     item.value = '';
                 });
 
                 const skWaveDelet = () => {
-
                     const skWave = document.querySelector('.skWave');
-                        skWave.remove();
-
+                    skWave.remove();
                 };
 
                 const addStatusMessage = (item, message) => {
-
                     statusMessage.textContent = message;
                     item.appendChild(statusMessage);
-
                 };
 
-                const outputData = () => {
+                const outputData = response => {
+                    if (response.status !== 200) {
+                        throw new Error('status network not 200');
+                    }
                     skWaveDelet();
                     addStatusMessage(item, successMessage);
                 };
 
-                const errorData = () => {
+                const errorData = error => {
                     skWaveDelet();
                     addStatusMessage(item, errorMessage);
+                    console.error(error);
                 };
 
-                postData(body)
+                postData(formData)
                     .then(outputData)
                     .catch(errorData);
 
