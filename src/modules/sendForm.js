@@ -118,19 +118,13 @@ const sendForm = () => {
         formArr = [form1, form2, form3],
         statusMessage = document.createElement('div');
 
-    statusMessage.style.cssText = `font-size: 2rem`;
+    statusMessage.style.cssText = `font-size: 2rem
+    color: #19B5FE;`;
     statusMessage.className = 'statusMessage';
 
 
 
-    const postData = item => {
-
-        return fetch('./server.php', {
-            method: 'POST',
-            body: item
-        });
-
-    };
+    const postData = item => fetch('./server.php', { method: 'POST', body: item });
 
     formArr.forEach(item => {
         item.addEventListener('submit', event => {

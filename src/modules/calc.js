@@ -1,5 +1,5 @@
 const calc = (price = 100) => {
-        
+
     const inputNumberVal = () => {
 
         const calcBlock = document.querySelector('.calc-block'),
@@ -43,7 +43,7 @@ const calc = (price = 100) => {
         });
 
     };
-    
+
     const animationCalc = copyTotalValue => {
 
         const totalValue = document.getElementById('total');
@@ -54,7 +54,10 @@ const calc = (price = 100) => {
             draw: progress => {
                 totalValue.textContent = Math.trunc(copyTotalValue * progress);
             },
-            elseFunc: () => { return; }
+            // eslint-disable-next-line arrow-body-style
+            elseFunc: () => {
+                return;
+            }
         });
 
     };
@@ -108,4 +111,4 @@ const calc = (price = 100) => {
     });
 };
 
-export default calc
+export default calc;

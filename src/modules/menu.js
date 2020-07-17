@@ -64,7 +64,7 @@ const menu = () => {
         const menu = document.querySelector('menu');
         if (target.closest('.menu') || (target.closest('menu') && target.closest('a') !== null)) {
             menu.classList.toggle('active-menu');
-        } else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu') {
+        } else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu' && target.closest('li') === null) {
             menu.classList.toggle('active-menu');
         }
 
