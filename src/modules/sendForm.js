@@ -118,7 +118,7 @@ const sendForm = () => {
         formArr = [form1, form2, form3],
         statusMessage = document.createElement('div');
 
-    statusMessage.style.cssText = `font-size: 2rem
+    statusMessage.style.cssText = `font-size: 2rem;
     color: #19B5FE;`;
     statusMessage.className = 'statusMessage';
 
