@@ -188,4 +188,4 @@ const sendForm = () => {
 
 };
 
-export default sendForm
+export default sendForm;

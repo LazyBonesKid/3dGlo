@@ -128,4 +128,4 @@ const slider = () => {
     imageSwap();
 };
 
-export default slider
+export default slider;

@@ -19,7 +19,7 @@ const validator = () => {
 
     };
 
-    const addEventListenerForStr = (str, regExp ) => {
+    const addEventListenerForStr = (str, regExp) => {
 
         str.forEach(item => {
             item.addEventListener('input', () => {
@@ -38,4 +38,5 @@ const validator = () => {
     addEventListenerForStr(phone, regPhone);
 };
 
-export default validator
+export default validator;
+

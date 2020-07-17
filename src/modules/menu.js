@@ -62,7 +62,6 @@ const menu = () => {
     const menuEventListener = target => {
 
         const menu = document.querySelector('menu');
-
         if (target.closest('.menu') || (target.closest('menu') && target.closest('a') !== null)) {
             menu.classList.toggle('active-menu');
         } else if (menu.classList[0] === 'active-menu' && target.classList[0] !== 'active-menu') {
@@ -126,4 +125,4 @@ document.addEventListener('click', event => {
 
 };
 
-export default menu
+export default menu;
