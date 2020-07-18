@@ -34,10 +34,7 @@
       "error",
       "always"
     ],
-    "strict": [
-      "error",
-      "global"
-    ],
+    
     "brace-style": [
       "error",
       "1tbs",
@@ -81,13 +78,6 @@
             "after": false
           }
         }
-      }
-    ],
-    "max-len": [
-      "error",
-      {
-        "code": 120,
-        "ignoreUrls": true
       }
     ],
     "max-nested-callbacks": [

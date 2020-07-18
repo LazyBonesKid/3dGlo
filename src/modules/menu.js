@@ -27,7 +27,8 @@ const menu = () => {
         const popupContent = document.querySelector('.popup-content');
 
         const drawPopup = progress => {
-            popupContent.style.left = 42 * progress + '%';
+            const ch = 42 * progress + '%';
+            popupContent.style.cssText = `left: ${ch};`;
         };
 
         animate({
@@ -40,18 +41,23 @@ const menu = () => {
         });
     };
 
+    const IE = () => {
+        const menuCross  = document.querySelector('.close-btn');
+        menuCross.style.cssText = `position:  absolute`;
+    };
+
+    IE();
+
     const popupEventListener = target => {
 
-        const popupContent = document.querySelector('.popup-content'),
-        popUp = document.querySelector('.popup');
+        const popUp = document.querySelector('.popup');
 
         if (target.classList[0] === 'popup' || target.classList[0] === 'popup-close') {
-            popUp.style.display = 'none';
-            popupContent.style.left = '0%';
+            popUp.style.cssText = 'display: none';
         }
 
-        if (target.classList.value === 'btn form-btn popup-btn') {
-            popUp.style.display = 'block';
+        if (target.classList[2] === 'popup-btn') {
+            popUp.style.cssText = 'display: block';
             if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && screen.width > 786) {
                 animationTogglePopUp();
             }

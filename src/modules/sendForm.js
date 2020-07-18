@@ -1,3 +1,4 @@
+
 const sendForm = () => {
 
 
@@ -42,7 +43,7 @@ const sendForm = () => {
 
             const skWave = document.createElement('div');
 
-            skWave.style = `
+            skWave.style.cssText = `
             height: 100px;
             width: 100px;
             margin-top: 30px;
@@ -58,7 +59,7 @@ const sendForm = () => {
                 const div = document.createElement('div');
 
                 div.className = `skDiv ${i + 1}`;
-                div.style = `
+                div.style.cssText = `
                 margin: 10px;
                 background-color: #19B5FE;
                 height: 8px;

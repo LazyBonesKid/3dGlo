@@ -1,4 +1,19 @@
+//Полифилы
 
+
+
+import "@babel/polyfill";
+import 'nodelist-foreach-polyfill';
+import elementClosest from 'element-closest';
+import 'formdata-polyfill';
+import 'es6-promise';
+import 'fetch-polyfill';
+
+import 'dom-node-polyfills';
+
+
+
+elementClosest(window);
 
 //калькулятор
 import  calc from                    './modules/calc';
