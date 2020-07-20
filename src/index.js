@@ -2,15 +2,17 @@
 
 
 
-import "@babel/polyfill";
+import '@babel/polyfill';
 import 'nodelist-foreach-polyfill';
 import elementClosest from 'element-closest';
 import 'formdata-polyfill';
 import 'es6-promise';
 import 'fetch-polyfill';
-
 import 'dom-node-polyfills';
 
+import smoothscroll from 'smoothscroll-polyfill';
+
+smoothscroll.polyfill();
 
 
 elementClosest(window);
